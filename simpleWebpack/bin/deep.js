@@ -1,16 +1,14 @@
+"use strict";
+console.log("这是simplewebpack");
 
-'use strict'
-console.log("这是simplewebpack")
-
-const fs = require('fs')
-const ejs = require('ejs')
+const fs = require("fs");
+const ejs = require("ejs");
 const path = require("path");
-
 
 let enter = path.resolve(__dirname, "./src/index.js");
 let output = path.resolve(__dirname, "./dist/main.js");
 
-let script = fs.readFileSync(enter,'utf-8');
+let script = fs.readFileSync(enter, "utf-8");
 
 let template = `(function (modules) {
   function require(moduleId) {
@@ -31,13 +29,11 @@ let template = `(function (modules) {
 });
 `;
 
-
 let result = ejs.render(template, {
   enter,
   script,
 });
 
 fs.writeFileSync(output, result);
-
 
 console.log("simplewebpack 构建成功");

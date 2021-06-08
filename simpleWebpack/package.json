@@ -2,13 +2,18 @@
   "name": "simplewebpack",
   "version": "1.0.0",
   "description": "",
-  "main": "lib/index.js",
+  "main": "bin/index.js",
+  "bin": {
+    "simplewebpack": "bin/index.js"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "commander": "^7.2.0"
+    "ejs": "^3.1.6",
+    "fs": "0.0.1-security",
+    "path": "^0.12.7"
   }
 }
