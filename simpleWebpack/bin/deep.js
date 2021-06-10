@@ -1,22 +1,23 @@
 "use strict";
-console.log("这是simplewebpack");
+require('colors');
+console.log("这是simplewebpack deep".blue);
 
 const fs = require("fs");
 const ejs = require("ejs");
 const path = require("path");
 
-let enter = path.resolve(__dirname, "./src/index.js");
-let output = path.resolve(__dirname, "./dist/main.js");
+let enter = path.resolve(process.cwd(), "./src/index.js");
+let output = path.resolve(process.cwd(), "./dist/main.js");
 
-let script = fs.readFileSync(enter, "utf-8");
+let script = fs.readFileSync(enter, "utf8");
 let modules = []
 
-let srcPath = path.resolve(__dirname, "./src");
+let srcPath = path.resolve(process.cwd(), "./src");
 
 // 正则匹配代码中reqire的依赖
 script = script.replace(/require\(["'](.+?)["']\)/, function () {
-  let name = path.join(srcPath, arguments[1]);
-  let content = fs.readFileSync(name, 'utf-8')
+  let name = path.join(srcPath, arguments[1]+'.js');
+  let content = fs.readFileSync(name, 'utf8')
   modules.push({
     name,
     content,
@@ -35,17 +36,16 @@ let template = `(function (modules) {
     return module.exports;
   }
 
-  return require("<%-enter%>");
+  return require("<%- enter %>");
 })({
-  "<%-enter%>": function (module, exports, require) {
-    eval(\'<%-script%>\');
+  "<%- enter %>": function (module, exports, require) {
+    eval(\`<%- script %>\`);
   },
-  <%for(let i = 0; i < modules.length; i++){
-     let module = modules[i],
-     "<%-module.name%>": function (module, exports, require) {
-        eval(\'<%-module.content%>\');
+  <% for(let i = 0; i < modules.length; i++){ %>
+     "<%- modules[i].name %>": function (module, exports, require) {
+        eval(\`<%- modules[i].content %>\`);
      },
-  }%>,
+  <% } %>
 });
 `;
 
@@ -57,4 +57,4 @@ let result = ejs.render(template, {
 
 fs.writeFileSync(output, result);
 
-console.log("simplewebpack 构建成功");
+console.log("simplewebpack 构建成功".green);

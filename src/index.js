@@ -1,1 +1,3 @@
-document.innerHTML = "Hello, world"
+document.body.innerHTML = "Hello, world"
+document.write("<br/>")
+

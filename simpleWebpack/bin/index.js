@@ -1,16 +1,17 @@
 
 'use strict'
-console.log("这是simplewebpack")
+require('colors');
+console.log("这是simplewebpack".blue)
 
 const fs = require('fs')
 const ejs = require('ejs')
 const path = require("path");
 
 
-let enter = path.resolve(__dirname, "./src/index.js");
-let output = path.resolve(__dirname, "./dist/main.js");
+let enter = path.resolve(process.cwd(), "./src/index.js");
+let output = path.resolve(process.cwd(), "./dist/main.js");
 
-let script = fs.readFileSync(enter,'utf-8');
+let script = fs.readFileSync(enter,'utf8');
 
 let template = `(function (modules) {
   function require(moduleId) {
@@ -23,10 +24,10 @@ let template = `(function (modules) {
     return module.exports;
   }
 
-  return require("<%-enter%>");
+  return require("<%- enter %>");
 })({
-  "<%-enter%>": function (module, exports) {
-    eval(\'<%-script%>\');
+  "<%- enter %>": function (module, exports) {
+    eval(\`<%- script %>\`);
   },
 });
 `;
@@ -40,4 +41,4 @@ let result = ejs.render(template, {
 fs.writeFileSync(output, result);
 
 
-console.log("simplewebpack 构建成功");
+console.log("simplewebpack 构建成功".green);
