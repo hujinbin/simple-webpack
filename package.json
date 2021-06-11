@@ -4,7 +4,6 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "webpack": "npx webpack --mode development",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
